@@ -1,1 +1,12 @@
-{{word.attributes.body}}
+{{display}}
+
+<form id="guess-form">
+  <input type="text" name="guess" id="new_letter_guess">
+  <input type="submit" value="Guess">
+</form>
+
+<ul>
+{{#each guessedLetters}}
+  <li>{{this}}</li>
+{{/each}}
+</ul>
