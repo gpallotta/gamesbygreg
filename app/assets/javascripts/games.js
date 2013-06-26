@@ -4,7 +4,8 @@ window.Games = {
   Views: {},
   Routers: {},
   initialize: function() {
-    alert('Hello from Backbone!');
+    new Games.Routers.Words;
+    Backbone.history.start();
   }
 };
 
