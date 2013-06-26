@@ -1,9 +1,13 @@
-window.Games =
-  Models: {}
-  Collections: {}
-  Views: {}
-  Routers: {}
-  initialize: -> alert 'Hello from Backbone!'
+window.Games = {
+  Models: {},
+  Collections: {},
+  Views: {},
+  Routers: {},
+  initialize: function() {
+    alert('Hello from Backbone!');
+  }
+};
 
-$(document).ready ->
-  Games.initialize()
+$(document).ready(function() {
+  Games.initialize();
+});
