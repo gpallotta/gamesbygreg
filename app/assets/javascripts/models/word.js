@@ -12,9 +12,12 @@ Games.Models.Word = Backbone.Model.extend({
   },
 
   display: function() {
-    var str = '';
     var word = this.word();
     len = word.length;
+    return this.getString('', word, len);
+  },
+
+  getString: function(str, word, len) {
     for (var i = 0; i < len; i++) {
       letter = word[i];
       if (this.guessedLetters.indexOf(letter) > -1) {
@@ -23,11 +26,11 @@ Games.Models.Word = Backbone.Model.extend({
         str += '_' ;
       }
     }
-    console.log(str.length);
     return str;
   },
 
   checkLetter: function(letter) {
+    letter = letter.toLowerCase();
     if (this.guessedLetters.indexOf(letter) > -1){
       return 'Already guessed';
     } else {
