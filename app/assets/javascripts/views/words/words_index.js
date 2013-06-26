@@ -17,7 +17,7 @@ Games.Views.WordsIndex = Backbone.View.extend({
     var word = new Games.Models.Word({id: id});
     word.fetch();
     var view = new Games.Views.Word({model: word});
-    $('#container').append(view.render().el);
+    $('#container').html(view.render().el);
   }
 
 });

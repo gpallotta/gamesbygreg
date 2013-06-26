@@ -14,33 +14,55 @@ Games.Views.Word = Backbone.View.extend({
 
   render: function() {
     $(this.el).html(this.template({
-      word: this.model.toJSON(),
       display: this.model.display(),
       guessedLetters: this.model.guessedLetters
     }));
     return this;
   },
 
-  startOver: function() {
-    $('#container').append('You win!');
-    var index = new Games.Views.WordsIndex();
-    $('#container').html(index.render().el);
-  },
-
   checkGuess: function(e) {
     e.preventDefault();
     var letter = $('#new_letter_guess').val();
-    this.model.checkLetter(letter);
-    $('#guess-form')[0].reset();
+    var alreadyGuessed = this.model.checkLetter(letter);
+    this.alreadyGuessedErrorContent('Already guessed');
     this.model.trigger('guess');
-    $('#new_letter_guess').focus();
+    this.resetForm();
+    this.alreadyGuessedErrorContent(alreadyGuessed);
     this.checkWin();
   },
+
+  alreadyGuessedErrorContent: function(html) {
+    $('#already-guessed-error').html(html);
+  },
+
+  // underscores: function() {
+  //   str = '';
+  //   if (this.model.get('body') === undefined) {
+  //     return '';
+  //   } else {
+  //     len = this.model.get('body').length;
+  //     for (var i = 0; i < len; i++) {
+  //       str += '_';
+  //     }
+  //     return str;
+  //   }
+  // },
 
   checkWin: function() {
     if (this.model.checkWin()) {
       this.model.trigger('win');
     }
+  },
+
+  resetForm: function() {
+    $('#new_letter_guess').focus();
+    $('#guess-form')[0].reset();
+  },
+
+  startOver: function() {
+    var index = new Games.Views.WordsIndex();
+    $('#win-message').show();
+    $('#container').append(index.render().el);
   }
 
 });

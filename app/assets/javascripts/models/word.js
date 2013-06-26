@@ -18,24 +18,26 @@ Games.Models.Word = Backbone.Model.extend({
     for (var i = 0; i < len; i++) {
       letter = word[i];
       if (this.guessedLetters.indexOf(letter) > -1) {
-        str += letter + ' ' ;
+        str += letter;
       } else {
-        str += '_' + ' ' ;
+        str += '_' ;
       }
     }
+    console.log(str.length);
     return str;
   },
 
   checkLetter: function(letter) {
     if (this.guessedLetters.indexOf(letter) > -1){
-      alert('letter already guessed');
+      return 'Already guessed';
     } else {
       this.guessedLetters.push(letter);
+      return '';
     }
   },
 
   checkWin: function() {
-    if (this.get('body') === this.display().replace(/\s+/g, '')) {
+    if (this.get('body') === this.display()) {
       this.guessedLetters.length = 0;
       return true;
     } else {

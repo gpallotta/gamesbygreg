@@ -1,12 +1,22 @@
-{{display}}
+<div class="pure-u-1-1">
+  <div id="display">
+    <p>{{display}}</p>
+    <p>{{underscores}}</p>
+  </div>
 
-<form id="guess-form">
-  <input type="text" name="guess" id="new_letter_guess">
-  <input type="submit" value="Guess">
-</form>
+  <div>
+    <span id="already-guessed-error"></span>
+    <form id="guess-form" class="pure-form">
+        <input type="text" name="guess" id="new_letter_guess">
+        <input type="submit" value="Guess"class="pure-button" id="letter-submit">
+    </form>
+  </div>
 
-<ul>
-{{#each guessedLetters}}
-  <li>{{this}}</li>
-{{/each}}
-</ul>
+  <ul id="guessed-letters">
+  {{#each guessedLetters}}
+    <li>{{this}}</li>
+  {{/each}}
+  </ul>
+
+  <p id="win-message">You win!</p>
+</div>

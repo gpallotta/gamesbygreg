@@ -5,10 +5,13 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.2.0/pure-min.css">
 </head>
 <body>
 
-<%= yield %>
+  <div class="pure-g">
+      <%= yield %>
+  </div>
 
 </body>
 </html>

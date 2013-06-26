@@ -1,3 +1,75 @@
-// Place all the styles related to the words controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@font-face {
+  font-family: 'DroidSans';
+  src: url('Droidsans.ttf') format('truetype');
+}
+
+body {
+  font-family: 'DroidSans';
+}
+
+#container {
+  margin: auto;
+  width: 960px;
+  text-align: center;
+}
+
+#hangman {
+  text-align: center;
+  font-size: 4em;
+  color: #34495E;
+}
+
+#start-button {
+  font-size: 35px;
+  color: white;
+}
+
+#letter-submit {
+  font-size: 20px;
+  color: white;
+  background-color: #34495E;
+}
+
+li {
+  list-style: none;
+  color: #BDC3C7;
+  font-size: 20px;
+  display: inline-block;
+  padding: 0 5px;
+  text-transform: uppercase;
+}
+
+#new_letter_guess {
+  text-align: center;
+  padding: 10px;
+  font-size: 30px;
+  color: #BDC3C7;
+  width: 118px;
+  display: block;
+  margin: 0 auto;
+  text-transform: uppercase;
+}
+
+#display {
+  margin-bottom: 30px;
+  color: #BDC3C7;
+  text-transform: uppercase;
+  font-size: 40px;
+  padding-left: 1em;
+  letter-spacing: 1em;
+}
+
+#guessed-letters {
+  padding-left: 0;
+}
+
+#already-guessed-error {
+  color: #C0392B;
+  letter-spacing: 0em;
+}
+
+#win-message {
+  display: none;
+  letter-spacing: 0em;
+  font-size: 20px;
+}
