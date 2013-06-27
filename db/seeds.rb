@@ -1,7 +1,3 @@
-Word.create!(body: 'basketball')
-Word.create!(body: 'greg')
-Word.create!(body: 'chair')
-Word.create!(body: 'subway')
-Word.create!(body: 'academy')
-Word.create!(body: 'programming')
-Word.create!(body: 'hello')
+File.open('db/word_file', 'r') do |f|
+  f.each_line { |line| Word.create(body: line.chomp.downcase) }
+end

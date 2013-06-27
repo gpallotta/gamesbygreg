@@ -64,12 +64,12 @@ li {
 }
 
 #already-guessed-error {
+  display: none;
   color: #C0392B;
   letter-spacing: 0em;
 }
 
-#win-message {
-  display: none;
+#result-message {
   letter-spacing: 0em;
   font-size: 30px;
   color: #7F8C8D;

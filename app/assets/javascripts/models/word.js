@@ -3,6 +3,8 @@ Games.Models.Word = Backbone.Model.extend({
 
   guessedLetters: [],
 
+  wrongGuessCount: 0,
+
   word: function() {
     if (this.get('body')) {
       return this.get('body');
@@ -31,20 +33,27 @@ Games.Models.Word = Backbone.Model.extend({
 
   checkLetter: function(letter) {
     letter = letter.toLowerCase();
-    if (this.guessedLetters.indexOf(letter) > -1){
-      return 'Already guessed';
-    } else {
+    if (this.guessedLetters.indexOf(letter) < 0){
+
+      if (this.word().indexOf(letter) < 0) {
+        this.wrongGuessCount += 1;
+      }
       this.guessedLetters.push(letter);
-      return '';
     }
   },
 
-  checkWin: function() {
+  checkEndGame: function() {
     if (this.get('body') === this.display()) {
-      this.guessedLetters.length = 0;
-      return true;
-    } else {
-      return false;
+      this.resetStats();
+      return 'win';
+    } else if (this.wrongGuessCount === 7) {
+      this.resetStats();
+      return 'lose';
     }
+  },
+
+  resetStats: function() {
+    this.guessedLetters.length = 0;
+    this.wrongGuessCount = 0;
   }
 });

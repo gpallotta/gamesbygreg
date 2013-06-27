@@ -2,6 +2,8 @@ Games.Views.Word = Backbone.View.extend({
 
   template: HandlebarsTemplates['words/word'],
 
+  endMessage: '',
+
   events: {
     'submit #guess-form': 'checkGuess',
     'keyup #new_letter_guess': 'replaceInput'
@@ -10,7 +12,14 @@ Games.Views.Word = Backbone.View.extend({
   initialize: function() {
     this.model.on('change', this.render, this);
     this.model.on('guess', this.render, this);
-    this.model.on('win', this.displayWin, this);
+    this.model.on('win', function() {
+      this.endMessage = 'You win!';
+      this.displayResult();
+    }, this);
+    this.model.on('lose', function() {
+      this.endMessage = 'You lose';
+      this.displayResult();
+    }, this);
   },
 
   render: function() {
@@ -23,21 +32,39 @@ Games.Views.Word = Backbone.View.extend({
 
   checkGuess: function(e) {
     e.preventDefault();
-    var letter = $('#new_letter_guess').val();
-    var alreadyGuessed = this.model.checkLetter(letter);
+    var letter = $('#new_letter_guess').val().toLowerCase();
+
+    var alreadyGuessed = this.alreadyGuessed(letter);
+    this.model.checkLetter(letter);
     this.model.trigger('guess');
+    this.showAlreadyGuessed(alreadyGuessed);
+
     this.resetForm();
-    this.alreadyGuessedErrorContent(alreadyGuessed);
-    this.checkWin();
+    this.checkEndGame();
   },
 
-  alreadyGuessedErrorContent: function(html) {
-    $('#already-guessed-error').html(html);
+  alreadyGuessed: function(letter) {
+    if (this.model.guessedLetters.indexOf(letter) > -1) {
+      return true;
+    } else {
+      return false;
+    }
   },
 
-  checkWin: function() {
-    if (this.model.checkWin()) {
+  showAlreadyGuessed: function(display) {
+    if (display) {
+      $('#already-guessed-error').show();
+    } else {
+      $('#already-guessed-error').hide();
+    }
+  },
+
+  checkEndGame: function() {
+    var result = this.model.checkEndGame();
+    if (result === 'win') {
       this.model.trigger('win');
+    } else if (result === 'lose') {
+      this.model.trigger('lose');
     }
   },
 
@@ -46,10 +73,10 @@ Games.Views.Word = Backbone.View.extend({
     $('#guess-form')[0].reset();
   },
 
-  displayWin: function() {
+  displayResult: function() {
     var index = new Games.Views.WordsIndex();
     $('#guess-form input').attr("disabled", "disabled");
-    $('#win-message').show();
+    $('#result-message').html(this.endMessage);
     $('#container').append(index.render().el);
   },
 
