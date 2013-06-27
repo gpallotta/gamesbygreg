@@ -2,6 +2,7 @@ Games.Views.Word = Backbone.View.extend({
 
   template: HandlebarsTemplates['words/word'],
 
+
   endMessage: '',
 
   events: {
@@ -10,6 +11,18 @@ Games.Views.Word = Backbone.View.extend({
   },
 
   initialize: function() {
+    this.canvas = new Games.Views.Canvas();
+    this.drawFunctions = [
+      function() {},
+      this.canvas.noose,
+      this.canvas.head,
+      this.canvas.body,
+      this.canvas.leftLeg,
+      this.canvas.rightLeg,
+      this.canvas.leftArm,
+      this.canvas.rightArm,
+      this.canvas.sadFace
+    ];
     this.model.on('change', this.render, this);
     this.model.on('guess', this.render, this);
     this.model.on('win', function() {
@@ -37,6 +50,7 @@ Games.Views.Word = Backbone.View.extend({
     var alreadyGuessed = this.alreadyGuessed(letter);
     this.model.checkLetter(letter);
     this.model.trigger('guess');
+    this.drawFunctions[this.model.wrongGuessedLetters.length]();
     this.showAlreadyGuessed(alreadyGuessed);
 
     this.resetForm();

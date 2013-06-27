@@ -46,7 +46,7 @@ Games.Models.Word = Backbone.Model.extend({
     if (this.get('body') === this.display()) {
       this.resetStats();
       return 'win';
-    } else if (this.wrongGuessedLetters.length === 7) {
+    } else if (this.wrongGuessedLetters.length === 8) {
       this.resetStats();
       return 'lose';
     }
