@@ -91,6 +91,9 @@ Games.Views.Word = Backbone.View.extend({
     var index = new Games.Views.WordsIndex();
     $('#guess-form input').attr("disabled", "disabled");
     $('#result-message').html(this.endMessage);
+    if (this.endMessage === 'You lose') {
+      $('#word-was').html('The word was ' + this.model.word());
+    }
     $('#container').append(index.render().el);
   },
 
