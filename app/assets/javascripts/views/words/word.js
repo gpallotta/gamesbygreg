@@ -25,7 +25,7 @@ Games.Views.Word = Backbone.View.extend({
   render: function() {
     $(this.el).html(this.template({
       display: this.model.display(),
-      guessedLetters: this.model.guessedLetters
+      wrongLetters: this.model.wrongGuessedLetters
     }));
     return this;
   },
