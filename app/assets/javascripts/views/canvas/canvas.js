@@ -4,6 +4,7 @@ Games.Views.Canvas = Backbone.View.extend({
 
   initialize: function() {
     $('#canvas-container').html(this.render().el);
+    this.canvas = document.getElementById('canvas');
     this.gallows();
   },
 
@@ -13,7 +14,6 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   gallows: function() {
-    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(70,290);
@@ -25,7 +25,6 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   noose: function() {
-    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(140,25);
@@ -35,7 +34,6 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   head: function() {
-    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.arc(150,70,20,0,Math.PI*2);
@@ -44,7 +42,6 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   body: function() {
-    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(150, 90);
@@ -54,7 +51,6 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   leftLeg: function() {
-    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(150, 140);
@@ -64,7 +60,6 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   rightLeg: function() {
-    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(150, 140);
@@ -74,7 +69,6 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   leftArm: function() {
-    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(150, 110);
@@ -84,7 +78,6 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   rightArm: function() {
-    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(150, 110);
@@ -94,26 +87,16 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   sadFace: function() {
-    var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
     ctx.beginPath();
-
     ctx.moveTo(155,80);
     ctx.arc(150,80,5,0,Math.PI,true);
-
     ctx.moveTo(145,65);
     ctx.arc(145,65,2,0,Math.PI*2,true);
-
     ctx.moveTo(155,65);
     ctx.arc(155,65,2,0,Math.PI*2,true);
-
     ctx.closePath();
     ctx.stroke();
   }
 
 });
-
-
-
-// 400 high
-// 00 wide
