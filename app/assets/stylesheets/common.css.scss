@@ -1,0 +1,36 @@
+#title {
+  text-align: center;
+  font-size: 4em;
+  color: #34495E;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.nav-links {
+  text-align: center;
+  letter-spacing: 0;
+  ul {
+    display: inline-block;
+    padding: 40px;
+    :hover {
+      background-color: gray;
+    }
+  }
+  a {
+    text-decoration: none;
+    color: #34495E;
+    :active {
+      background-color: gray;
+    }
+  }
+}
+
+#ttt-start-button {
+  font-size: 35px;
+  color: white;
+}
+
+#hangman-start-button {
+  font-size: 35px;
+  color: white;
+}

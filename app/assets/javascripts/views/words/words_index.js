@@ -3,7 +3,7 @@ Games.Views.WordsIndex = Backbone.View.extend({
   template: HandlebarsTemplates['words/index'],
 
   events: {
-    'click #start-button': 'startGame'
+    'click #hangman-start-button': 'startGame'
   },
 
   render: function() {
