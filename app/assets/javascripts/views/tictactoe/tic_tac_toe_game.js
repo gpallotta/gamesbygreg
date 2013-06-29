@@ -2,6 +2,10 @@ Games.Views.TictactoeGame = Backbone.View.extend({
 
   template: HandlebarsTemplates['tictactoe/game'],
 
+  gregbot: false,
+
+  winner: false,
+
   translate: {
     'top-left': [0,0],
     'top-middle': [0,1],
@@ -19,9 +23,13 @@ Games.Views.TictactoeGame = Backbone.View.extend({
   },
 
   initialize: function() {
-    this.player1 = prompt('Enter name of player 1:');
-    this.player2 = prompt('Enter name of player 2:');
+    this.player1 = prompt('Enter name of player:');
+    // this.player2 = prompt('Enter name of player 2:');
     this.model.on('win', this.displayWin, this);
+  },
+
+  setGregbot: function(val) {
+    this.gregbot = val;
   },
 
   render: function() {
@@ -35,8 +43,30 @@ Games.Views.TictactoeGame = Backbone.View.extend({
     var existingPiece = this.model.board[ index[0] ][ index[1] ];
     if (existingPiece === undefined) {
       this.model.board[ index[0] ][ index[1] ] = pieceToAdd;
-      this.handleAfterPiecePlace(index);
+      this.handleAfterPiecePlace(index, this.player1);
+      if (this.gregbot && !this.winner) {
+        this.displayGregbotThinking();
+        var _this = this;
+        setTimeout(function() {
+          _this.gregbotMove();
+        }, 1000);
+      }
     }
+  },
+
+  displayGregbotThinking: function() {
+    $('#gregbot-thinking').fadeIn();
+  },
+
+  hideGregbotThinking: function() {
+    $('#gregbot-thinking').hide();
+  },
+
+  gregbotMove: function() {
+    var index = this.gregbot.move(this.model.board, this.model.round);
+    this.model.board[ index[0] ][ index[1] ] = this.model.round * -1;
+    this.handleAfterPiecePlace(index, 'Gregbot');
+    this.hideGregbotThinking();
   },
 
   getXYIndex: function(e) {
@@ -44,28 +74,28 @@ Games.Views.TictactoeGame = Backbone.View.extend({
     return this.translate[squareId];
   },
 
-  handleAfterPiecePlace: function(index) {
+  handleAfterPiecePlace: function(index, name) {
     var oldIndex = this.model.removeOldPieces();
     this.displayPiece(index);
     if (oldIndex) { this.displayPiece(oldIndex); }
     this.model.round += 1;
-    this.checkWin();
+    this.checkWin(name);
   },
 
-  checkWin: function() {
+  checkWin: function(name) {
     if (this.model.checkWin()) {
-      alert('win');
+      this.winner = name;
       this.model.trigger('win');
     }
   },
 
   displayPiece: function(index) {
-    var piece = this.model.board [ index[0] ][ index[1] ]; //get piece at current location (+/- num)
-    var key = this.getKeyByValue(index); // get square id from arr
+    var piece = this.model.board [ index[0] ][ index[1] ];
+    var key = this.getKeyByValue(index);
     if (piece && piece > 0) {
-      $('#' + key).css('background-color', 'red'); // if a positive piece, add x
+      $('#' + key).css('background-color', '#C0392B'); // if a positive piece, add x
     } else if (piece && piece < 0) {
-      $('#' + key).css('background-color', 'black'); // if a negative piece, add o
+      $('#' + key).css('background-color', '#34495E'); // if a negative piece, add o
     } else {
       $('#' + key).css('background-color', 'white');
     }
@@ -82,9 +112,12 @@ Games.Views.TictactoeGame = Backbone.View.extend({
   displayWin: function() {
     this.model.clear();
     this.model.resetVars();
+    $('#winner').html(this.winner + ' wins!');
+    $('#winner').show();
     var view = new Games.Views.TictactoeIndex();
-    $('#canvas-container').hide();
-    $('#container').html(view.render().el);
+    // $('#container').html(view.render().el);
+    $('.board').append(view.render().el);
+
   }
 
 });

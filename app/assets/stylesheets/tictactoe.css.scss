@@ -1,5 +1,36 @@
+#ttt-button-wrapper {
+  margin-top: 15px;
+}
+
+#ttt-human {
+  font-size: 35px;
+  color: white;
+  padding: 20px;
+  border: 0;
+}
+
+#ttt-gregbot {
+  font-size: 35px;
+  color: white;
+}
+
+#winner {
+  font-size: 30px;
+  display: none;
+  letter-spacing: 0;
+  margin: 20px;
+}
+
 .board {
   height: 350px;
+}
+
+#gregbot-thinking {
+  display: none;
+  letter-spacing: 0;
+  margin-top: 10px;
+  margin-left: 40px;
+  font-size: 25px;
 }
 
 .row {

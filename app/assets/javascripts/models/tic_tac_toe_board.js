@@ -22,6 +22,7 @@ Games.Models.TictactoeBoard = Backbone.Model.extend({
       this.board[i] = [];
     }, this);
     this.round = 1;
+    this.winner = false;
   },
 
   getMultiplier: function() {
@@ -46,9 +47,6 @@ Games.Models.TictactoeBoard = Backbone.Model.extend({
       return true;
     }
   },
-
-  // 0,0  |  1,1  |  2,2
-  // 0,2  |  1,1  |  2,0
 
   checkForThree: function(space1, space2, space3) {
     var posWin = 0;
