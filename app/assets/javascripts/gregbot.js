@@ -95,9 +95,11 @@ var Gregbot = {
   canSetUpWin: function() {
     // round is 7
     // board will have -5, -3, -1
+    // board has 2, 4, 6 for human
     // gregbot is looking to place -7
     // want to place piece such that new piece and -5 form a row of three with human piece of val 4
-    // neutral terms, if row has (-round - 2) and (round - 3), place in empty space in that row (if it has one)
+    // want 3rd piece for human, undefined, and 1st or 2nd piece for gregbot
+    // (round-5) for human, undefined, -(round)
 
     var piece, undefinedIndex, x, y;
     var botPiece, humanPiece, undefinedCount = 0;
@@ -109,8 +111,8 @@ var Gregbot = {
         x = coordinates[i][j][0];
         y = coordinates[i][j][1];
         piece = this.board[x][y];
-        if ( piece > 0 && (piece === this.round-3) )   { humanPiece += 1; }
-        if ( piece < 0 && (piece === (this.round*-1)-2) )   { botPiece += 1; }
+        if ( piece > 0 && (piece === this.round-5) ) { humanPiece += 1; }
+        if ( piece < 0 && (piece+4 >= (this.round*-1)) ) { botPiece += 1; }
         if (piece === undefined) {
           undefinedCount += 1;
           undefinedIndex = coordinates[i][j];
