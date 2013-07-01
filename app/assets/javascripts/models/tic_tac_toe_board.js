@@ -1,19 +1,44 @@
 Games.Models.TictactoeBoard = Backbone.Model.extend({
 
-  board: [ [], [], [] ],
-
   round: 1,
+
+  board: [ [0,0,0], [0,0,0], [0,0,0] ],
+
+  initialize: function() {
+    var that = this;
+    this.boardRef = new Firebase('https://games-by-greg.firebaseIO.com/board');
+    this.roundRef = new Firebase('https://games-by-greg.firebaseIO.com/round');
+    this.boardRef.on('value', function(snapshot) {
+      if (snapshot.val()) {
+        that.board = snapshot.val();
+      }
+    });
+    this.roundRef.on('value', function(snapshot) {
+      that.round = snapshot.val();
+    });
+  },
 
   removeOldPieces: function() {
     for (var y = 0; y < 3; y++) {
       for (var x = 0; x < 3; x++) {
         var piece = Math.abs(this.board[y][x]);
         if (piece === this.round-6 || piece === this.round+6) {
-          this.board[y][x] = undefined;
+          this.board[y][x] = '';
           return [y,x];
         }
       }
     }
+  },
+
+  setBoard: function(board) {
+    this.board = board;
+  },
+
+  setPiece: function(piece, index) {
+    this.board[ index[0] ][ index[1] ] = piece;
+    this.round += 1;
+    this.boardRef.set(this.board);
+    this.roundRef.set(this.round);
   },
 
   resetVars: function() {

@@ -1,0 +1,52 @@
+tetris:
+  watches for change in value of playerX/online property
+  on change, if snapshot is null and we're watching, then try to join
+  join function is passed a playernum
+  tries to set playerX/online to true
+  if successful, that player has joined and the game starts
+
+
+I need to:
+
+  have a /players/playerX/online property
+
+  watch /players for changes
+    if both are set, start game
+
+  have a /game/board property
+    after each move, set it to the current board
+
+  have a /game/turn property
+  have a /game/round property
+  watch /game/board for changes
+    on change, redraw the entire board
+    on change, increment round
+    on change, change turn
+
+
+user visits page
+click tic tac toe, see the two buttons
+they click play against human
+they're prompted for name
+they wait for another player
+another player joins, enters name
+game begins
+each player moves in turn until the game is over
+players see a button to play again - if they click, repeat original join process
+
+
+
+user clicks play against human
+at this point, ttt index fires humanGame function
+calls startGame, passing in false for gregbot
+startGame instantiates board and view, then renders it
+
+
+I need:
+user clicks tic tac toe button
+waitToJoin function is called
+this function sets up watc
+user clicks play against human
+ttt index fires tryToJoin function
+this function sets players/player0 or players/player1 to their name
+have a function watching both player0 and player1

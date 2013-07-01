@@ -24,8 +24,6 @@ var Gregbot = {
   },
 
   coordinates: function() {
-    // returns an array
-    //
     return [
     [ [0,0],[0,1],[0,2] ],
     [ [1,0],[1,1],[1,2] ],
@@ -64,12 +62,6 @@ var Gregbot = {
   },
 
   canBlock: function() {
-    // round is 7
-    // board will have 2, 4, 6
-    // human will be looking to place 8 after this turn
-    // look for two positive numbers in an row
-    // valid if (piece > 0) and (piece + 4 >= round)
-
     var piece, undefinedIndex, x, y;
     var pieceCount, undefinedCount = 0;
     var coordinates = this.coordinates();
@@ -93,14 +85,6 @@ var Gregbot = {
   },
 
   canSetUpWin: function() {
-    // round is 7
-    // board will have -5, -3, -1
-    // board has 2, 4, 6 for human
-    // gregbot is looking to place -7
-    // want to place piece such that new piece and -5 form a row of three with human piece of val 4
-    // want 3rd piece for human, undefined, and 1st or 2nd piece for gregbot
-    // (round-5) for human, undefined, -(round)
-
     var piece, undefinedIndex, x, y;
     var botPiece, humanPiece, undefinedCount = 0;
     var coordinates = this.coordinates();
