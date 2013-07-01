@@ -2,7 +2,7 @@ Games.Models.TictactoeBoard = Backbone.Model.extend({
 
   round: 1,
 
-  board: [ [0,0,0], [0,0,0], [0,0,0] ],
+  board: [ ['','',''], ['','',''], ['','',''] ],
 
   initialize: function() {
     var that = this;
@@ -36,6 +36,7 @@ Games.Models.TictactoeBoard = Backbone.Model.extend({
 
   setPiece: function(piece, index) {
     this.board[ index[0] ][ index[1] ] = piece;
+    this.removeOldPieces(); // see if a piece needs to be removed, remove it if so
     this.round += 1;
     this.boardRef.set(this.board);
     this.roundRef.set(this.round);
@@ -44,7 +45,7 @@ Games.Models.TictactoeBoard = Backbone.Model.extend({
   resetVars: function() {
     _.times(3, function(i) {
       delete this.board[i];
-      this.board[i] = [];
+      this.board[i] = ['','',''];
     }, this);
     this.round = 1;
     this.winner = false;

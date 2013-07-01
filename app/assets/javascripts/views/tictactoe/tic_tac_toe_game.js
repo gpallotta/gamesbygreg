@@ -24,15 +24,27 @@ Games.Views.TictactoeGame = Backbone.View.extend({
 
   initialize: function() {
     var that = this;
-    // this.player1 = prompt('Enter name of player:');
-    // this.player2 = prompt('Enter name of player 2:');
     this.model.on('win', this.displayWin, this);
+    this.currentPlayerRef = new Firebase('https://games-by-greg.firebaseIO.com/currentPlayer');
+    this.currentPlayerRef.on('value', function(snapshot) {
+      that.currentPlayer = snapshot.val();
+    });
     this.boardRef = new Firebase('https://games-by-greg.firebaseIO.com/board');
+    this.player0Ref = new Firebase('https://games-by-greg.firebaseIO.com/players/player0');
+    this.player1Ref = new Firebase('https://games-by-greg.firebaseIO.com/players/player1');
     // board is set properly here
     this.boardRef.on('value', function(snapshot) {
       if (that.model) {
         that.displayPieces(that.model.board);
+        that.checkWin(that.currentPlayer);
       }
+    });
+
+    this.player0Ref.on('value', function(snapshot) {
+      that.name0 = snapshot.val().name;
+    });
+    this.player1Ref.on('value', function(snapshot) {
+      that.name1 = snapshot.val().name;
     });
   },
 
@@ -46,27 +58,33 @@ Games.Views.TictactoeGame = Backbone.View.extend({
   },
 
   handleClick: function(e) {
-    var pieceToAdd = this.model.round * this.model.getMultiplier();
-    var index = this.getXYIndex(e);
-    var existingPiece = this.model.board[ index[0] ][ index[1] ];
-    if (existingPiece === undefined || existingPiece === '' || existingPiece === 0) {
-      this.model.setPiece(pieceToAdd, index);
-      this.model.removeOldPieces(); // see if a piece needs to be removed, remove it if so
-      // this.handleAfterPiecePlace(index, this.player1);
-      this.checkWin(name);
-      // if (this.gregbot && !this.winner) {
-      //   this.displayGregbotThinking();
-      //   var _this = this;
-      //   setTimeout(function() {
-      //     _this.gregbotMove();
-      //   }, 1000);
-      // }
+    // debugger;
+    if (this.currentPlayer === this.options.name) {
+      var pieceToAdd = this.model.round * this.model.getMultiplier();
+      var index = this.getXYIndex(e);
+      var existingPiece = this.model.board[ index[0] ][ index[1] ];
+      if (existingPiece === undefined || existingPiece === '' || existingPiece === 0) {
+        this.model.setPiece(pieceToAdd, index);
+        this.checkWin(this.currentPlayer);
+        this.toggleCurrentPlayer();
+        // if (this.gregbot && !this.winner) {
+        //   this.displayGregbotThinking();
+        //   var _this = this;
+        //   setTimeout(function() {
+        //     _this.gregbotMove();
+        //   }, 1000);
+        // }
+      }
     }
   },
 
-  handleAfterPiecePlace: function(index, name) {
-    // this.model.removeOldPieces(); // see if a piece needs to be removed, remove it if so
-    // this.displayPieces(this.model.board); // display new piece
+  toggleCurrentPlayer: function() {
+
+    if (this.currentPlayer === this.name0) {
+      this.currentPlayerRef.set(this.name1);
+    } else {
+      this.currentPlayerRef.set(this.name0);
+    }
   },
 
   // displayGregbotThinking: function() {
@@ -125,6 +143,8 @@ Games.Views.TictactoeGame = Backbone.View.extend({
     this.model.resetVars();
     $('#winner').html(this.winner + ' wins!');
     $('#winner').show();
+    this.player0Ref.child('online').remove();
+    this.player1Ref.child('online').remove();
     var view = new Games.Views.TictactoeIndex();
     // $('#container').html(view.render().el);
     $('.board').append(view.render().el);

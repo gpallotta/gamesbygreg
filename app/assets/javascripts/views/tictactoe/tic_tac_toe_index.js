@@ -21,21 +21,21 @@ Games.Views.TictactoeIndex = Backbone.View.extend({
     var online0, online1;
     this.gameRef = new Firebase('games-by-greg.firebaseIO.com/');
 
-    this.gameRef.child('/players').on('value', function(snapshot) {
-      if (snapshot.val() && snapshot.val().player0) {
-        online0 = snapshot.val().player0.online;
-      }
-      if (snapshot.val() && snapshot.val().player1) {
-        online1 = snapshot.val().player1.online;
-      }
-      if (online0 === true && online1 === true) {
-        that.startGame();
-      }
-    });
+    // this.gameRef.child('/players').on('value', function(snapshot) {
+    //   if (snapshot.val() && snapshot.val().player0) {
+    //     online0 = snapshot.val().player0.online;
+    //   }
+    //   if (snapshot.val() && snapshot.val().player1) {
+    //     online1 = snapshot.val().player1.online;
+    //   }
+    //   if (online0 === true && online1 === true) {
+    //     that.startGame();
+    //   }
+    // });
   },
 
   startGame: function() {
-    this.hideButtons();
+    // view.setGregbot(gregbot);
     var player0Ref = new Firebase('games-by-greg.firebaseIO.com/players/player0');
     var player1Ref = new Firebase('games-by-greg.firebaseIO.com/players/player1');
     player0Ref.child('online').onDisconnect().remove();
@@ -47,9 +47,9 @@ Games.Views.TictactoeIndex = Backbone.View.extend({
     var roundRef = new Firebase('https://games-by-greg.firebaseIO.com/round');
     roundRef.set(1);
 
+    this.hideButtons();
     var board = new Games.Models.TictactoeBoard();
-    var view = new Games.Views.TictactoeGame({model: board});
-    // view.setGregbot(gregbot);
+    var view = new Games.Views.TictactoeGame({model: board, name: this.name});
     $('#container').html(view.render().el);
   },
 
@@ -84,6 +84,7 @@ Games.Views.TictactoeIndex = Backbone.View.extend({
   },
 
   tryToJoin: function(playerNum) {
+    var name = prompt('Enter name');
     var that = this;
     this.currentState = this.playingStates.joining;
     this.gameRef.child('players/player' + playerNum + '/online').transaction( function(onlineVal) {
@@ -94,8 +95,22 @@ Games.Views.TictactoeIndex = Backbone.View.extend({
       }
     }, function(error, committed) {
       if (committed) {
+        that.gameRef.child('/players/player' + playerNum + '/name').set(name);
         that.currentState = that.playingStates.playing;
+        that.name = name;
+
+        if (playerNum === 0) {
+          that.gameRef.child('currentPlayer').set(name);
+          var player0Ref = new Firebase('games-by-greg.firebaseIO.com/players/player0');
+          player0Ref.child('name').set(name);
+        } else {
+          var player1Ref = new Firebase('games-by-greg.firebaseIO.com/players/player1');
+          player1Ref.child('name').set(name);
+        }
+
+        that.startGame();
       }
+
     });
   }
 
