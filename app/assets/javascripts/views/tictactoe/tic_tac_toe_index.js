@@ -44,6 +44,9 @@ Games.Views.TictactoeIndex = Backbone.View.extend({
     var boardRef = new Firebase('https://games-by-greg.firebaseIO.com/board');
     boardRef.set( [ [], [], [] ] );
 
+    var roundRef = new Firebase('https://games-by-greg.firebaseIO.com/round');
+    roundRef.set(1);
+
     var board = new Games.Models.TictactoeBoard();
     var view = new Games.Views.TictactoeGame({model: board});
     // view.setGregbot(gregbot);
