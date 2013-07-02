@@ -179,7 +179,7 @@ Games.Views.TictactoeGame = Backbone.View.extend({
     this.player1Ref.child('name').set('');
     var view = new Games.Views.TictactoeIndex();
     // $('#container').html(view.render().el);
-    $('.board').append(view.render().el);
+    $('#buttons-after-win').html(view.render().el);
   }
 
 });
