@@ -12,7 +12,7 @@ Games.Routers.Main = Backbone.Router.extend({
   },
 
   tictactoe: function() {
-    var view = new Games.Views.TictactoeIndex();
+    var view = new Games.Views.TictactoeDispatcher();
     $('#canvas-container').hide();
     $('#container').html(view.render().el);
   }

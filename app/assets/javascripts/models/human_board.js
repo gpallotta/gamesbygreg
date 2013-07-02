@@ -1,4 +1,4 @@
-Games.Models.TictactoeBoard = Backbone.Model.extend({
+Games.Models.TictactoeHuman = Backbone.Model.extend({
 
   round: 1,
 
@@ -43,7 +43,8 @@ Games.Models.TictactoeBoard = Backbone.Model.extend({
       delete this.board[i];
       this.board[i] = ['','',''];
     }, this);
-    this.round = 1;
+    this.roundRef.set(1);
+    this.boardRef.set(this.board);
     this.winner = false;
   },
 

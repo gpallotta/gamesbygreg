@@ -21,6 +21,7 @@ Games.Views.TictactoeGregbot = Backbone.View.extend({
   },
 
   initialize: function() {
+    this.model = new Games.Models.TictactoeGregbot();
     this.model.on('win', this.displayWin, this);
   },
 
@@ -105,7 +106,7 @@ Games.Views.TictactoeGregbot = Backbone.View.extend({
     this.model.resetVars();
     $('#winner').html(this.winner + ' wins!');
     $('#winner').show();
-    var view = new Games.Views.TictactoeIndex();
+    var view = new Games.Views.TictactoeDispatcher();
     $('#buttons-after-win').html(view.render().el);
   }
 
