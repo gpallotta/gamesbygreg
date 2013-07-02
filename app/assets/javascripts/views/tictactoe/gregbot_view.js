@@ -4,6 +4,8 @@ Games.Views.TictactoeGregbot = Backbone.View.extend({
 
   winner: false,
 
+  round: 1,
+
   translate: {
     'top-left': [0,0],
     'top-middle': [0,1],
@@ -31,11 +33,13 @@ Games.Views.TictactoeGregbot = Backbone.View.extend({
   },
 
   handleClick: function(e) {
-    var pieceToAdd = this.model.round * this.model.getMultiplier();
+    var pieceToAdd = this.round * this.model.getMultiplier();
     var index = this.getXYIndex(e);
     var existingPiece = this.model.board[ index[0] ][ index[1] ];
     if (existingPiece === undefined || existingPiece === '' || existingPiece === 0) {
       this.model.setPiece(pieceToAdd, index);
+      this.model.removeOldPieces(this.round);
+      this.round += 1;
       this.displayPieces();
       this.checkWin('Human');
       if (!this.winner) {
@@ -87,10 +91,12 @@ Games.Views.TictactoeGregbot = Backbone.View.extend({
   },
 
   gregbotMove: function() {
-    var index = Gregbot.move(this.model.board, this.model.round);
-    var piece = this.model.round * -1;
+    var index = Gregbot.move(this.model.board, this.round);
+    var piece = this.round * -1;
     this.model.setPiece(piece, index);
     this.hideGregbotThinking();
+    this.model.removeOldPieces(this.round);
+    this.round += 1;
     this.displayPieces();
     this.checkWin('Gregbot');
   },

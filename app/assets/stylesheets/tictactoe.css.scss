@@ -48,33 +48,6 @@
     height: 125px;
     width: 125px;
     display: inline-block;
-  }
-  #top-left {
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-  }
-  #top-middle {
-    border-bottom: 1px solid black;
-    border-right: 1px solid black;
-  }
-  #top-right {
-    border-bottom: 1px solid black;
-  }
-  #middle-left {
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-  }
-  #middle-middle {
-    border-bottom: 1px solid black;
-    border-right: 1px solid black;
-  }
-  #middle-right {
-    border-bottom: 1px solid black;
-  }
-  #bottom-left {
-    border-right: 1px solid black;
-  }
-  #bottom-middle {
-    border-right: 1px solid black;
+    border: 1px solid black;
   }
 }

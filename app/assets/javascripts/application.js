@@ -17,6 +17,7 @@
 //= require backbone
 //= require games
 //= require_tree ../templates
+//= require ./models/tic_tac_toe_board
 //= require_tree ./models
 //= require_tree ./collections
 //= require_tree ./views

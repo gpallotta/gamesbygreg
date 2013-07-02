@@ -6,6 +6,8 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
 
   winner: false,
 
+  round: 1,
+
   translate: {
     'top-left': [0,0],
     'top-middle': [0,1],
@@ -48,11 +50,14 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
 
   handleClick: function(e) {
     if (this.currentPlayer === this.playerNum) {
-      var pieceToAdd = this.model.round * this.model.getMultiplier();
+      var pieceToAdd = this.round * this.model.getMultiplier(this.round);
       var index = this.getXYIndex(e);
       var existingPiece = this.model.board[ index[0] ][ index[1] ];
       if (existingPiece === undefined || existingPiece === '' || existingPiece === 0) {
         this.model.setPiece(pieceToAdd, index);
+        this.model.removeOldPieces(this.round);
+        this.boardRef.set(this.model.board);
+        this.roundRef.set(this.round+1);
         this.checkWin(this.name);
         this.setCurrentPlayer();
       }
@@ -60,8 +65,6 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
   },
 
   setCurrentPlayer: function() {
-    // if it's 1, we want 0
-    // if it's 0, we want 1
     var num = this.currentPlayer + 1;
     this.gameRef.child('currentPlayer').set(num % 2);
   },
@@ -104,7 +107,6 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
   },
 
   displayWin: function() {
-    // this.model.resetVars();
     $('#winner').html(this.winner + ' wins!');
     $('#winner').show();
     var view = new Games.Views.TictactoeDispatcher();
@@ -123,6 +125,7 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
   setFirebaseRefs: function() {
     this.gameRef = new Firebase('https://games-by-greg.firebaseIO.com');
     this.playersRef = new Firebase('https://games-by-greg.firebaseIO.com/players');
+    this.roundRef = new Firebase('https://games-by-greg.firebaseIO.com/round');
     this.boardRef = new Firebase('https://games-by-greg.firebaseIO.com/board');
   },
 
@@ -149,6 +152,9 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
     });
     this.gameRef.child('currentPlayer').on('value', function(snapshot) { // update current player
       that.currentPlayer = snapshot.val();
+    });
+    this.roundRef.on('value', function(snapshot) {
+      that.round = snapshot.val();
     });
   },
 
