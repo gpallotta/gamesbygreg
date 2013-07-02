@@ -2,8 +2,6 @@ Games.Views.TictactoeGame = Backbone.View.extend({
 
   template: HandlebarsTemplates['tictactoe/game'],
 
-  // gregbot: false,
-
   winner: false,
 
   translate: {
@@ -79,10 +77,6 @@ Games.Views.TictactoeGame = Backbone.View.extend({
     $('#waiting-for-opponent').hide();
   },
 
-  // setGregbot: function(val) {
-  //   this.gregbot = val;
-  // },
-
   render: function() {
     $(this.el).html(this.template());
     return this;
@@ -97,13 +91,6 @@ Games.Views.TictactoeGame = Backbone.View.extend({
         this.model.setPiece(pieceToAdd, index);
         this.checkWin(this.currentPlayer);
         this.toggleCurrentPlayer();
-        // if (this.gregbot && !this.winner) {
-        //   this.displayGregbotThinking();
-        //   var _this = this;
-        //   setTimeout(function() {
-        //     _this.gregbotMove();
-        //   }, 1000);
-        // }
       }
     }
   },
@@ -116,21 +103,6 @@ Games.Views.TictactoeGame = Backbone.View.extend({
       this.currentPlayerRef.set(this.name0);
     }
   },
-
-  // displayGregbotThinking: function() {
-  //   $('#gregbot-thinking').fadeIn();
-  // },
-
-  // hideGregbotThinking: function() {
-  //   $('#gregbot-thinking').hide();
-  // },
-
-  // gregbotMove: function() {
-  //   var index = this.gregbot.move(this.model.board, this.model.round);
-  //   this.model.board[ index[0] ][ index[1] ] = this.model.round * -1;
-  //   this.handleAfterPiecePlace(index, 'Gregbot');
-  //   this.hideGregbotThinking();
-  // },
 
   getXYIndex: function(e) {
     var squareId = e.currentTarget.id;
@@ -178,7 +150,6 @@ Games.Views.TictactoeGame = Backbone.View.extend({
     this.player1Ref.child('online').remove();
     this.player1Ref.child('name').set('');
     var view = new Games.Views.TictactoeIndex();
-    // $('#container').html(view.render().el);
     $('#buttons-after-win').html(view.render().el);
   }
 

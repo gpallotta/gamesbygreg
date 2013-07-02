@@ -73,7 +73,7 @@ var Gregbot = {
         y = coordinates[i][j][1];
         piece = this.board[x][y];
         if (piece > 0 && (piece+4 >= (this.round)) )   { pieceCount += 1; }
-        if (piece === undefined) {
+        if (piece === '') {
           undefinedCount += 1;
           undefinedIndex = coordinates[i][j];
         }

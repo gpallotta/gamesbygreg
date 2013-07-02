@@ -7,8 +7,8 @@ Games.Views.TictactoeIndex = Backbone.View.extend({
   currentState: false,
 
   events: {
-    'click #ttt-human': 'humanGame'
-    // 'click #ttt-gregbot': 'gregbotGame'
+    'click #ttt-human': 'humanGame',
+    'click #ttt-gregbot': 'gregbotGame'
   },
 
   render: function() {
@@ -61,9 +61,11 @@ Games.Views.TictactoeIndex = Backbone.View.extend({
     this.waitToJoin();
   },
 
-  // gregbotGame: function() {
-  //   bot = Gregbot;
-  // },
+  gregbotGame: function() {
+    var board = new Games.Models.TictactoeGregbot();
+    var view = new Games.Views.TictactoeGregbot({model: board});
+    $('#container').html(view.render().el);
+  },
 
   hideButtons: function() {
     $('#ttt-human').hide();
