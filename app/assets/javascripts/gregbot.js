@@ -50,7 +50,7 @@ var Gregbot = {
         if (piece < 0 && (piece+4 >= (this.round*-1)) ) {
           pieceCount += 1;
         }
-        if (piece === undefined) {
+        if (piece === '') {
           undefinedCount += 1;
           undefinedIndex = coordinates[i][j];
         }
@@ -86,18 +86,19 @@ var Gregbot = {
 
   canSetUpWin: function() {
     var piece, undefinedIndex, x, y;
-    var botPiece, humanPiece, undefinedCount = 0;
+    var botPiece, humanPiece, undefinedCount;
     var coordinates = this.coordinates();
     for (var i = 0; i < coordinates.length; i++) {
       undefinedCount = 0;
-      pieceCount = 0;
+      humanPiece = 0;
+      botPiece = 0;
       for (var j = 0; j < 3; j++) {
         x = coordinates[i][j][0];
         y = coordinates[i][j][1];
         piece = this.board[x][y];
         if ( piece > 0 && (piece === this.round-5) ) { humanPiece += 1; }
         if ( piece < 0 && (piece+4 >= (this.round*-1)) ) { botPiece += 1; }
-        if (piece === undefined) {
+        if (piece === '') {
           undefinedCount += 1;
           undefinedIndex = coordinates[i][j];
         }

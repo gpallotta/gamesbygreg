@@ -15,4 +15,9 @@ group :assets do
 
 end
 
+group :development, :test do
+  gem 'konacha'
+  gem 'poltergeist'
+end
+
 gem 'jquery-rails'
