@@ -23,29 +23,60 @@ Games.Views.TictactoeGame = Backbone.View.extend({
   },
 
   initialize: function() {
-    var that = this;
     this.model.on('win', this.displayWin, this);
+    this.setFirebaseRefs();
+    this.watchFirebaseData();
+  },
+
+  setFirebaseRefs: function() {
     this.currentPlayerRef = new Firebase('https://games-by-greg.firebaseIO.com/currentPlayer');
-    this.currentPlayerRef.on('value', function(snapshot) {
-      that.currentPlayer = snapshot.val();
-    });
     this.boardRef = new Firebase('https://games-by-greg.firebaseIO.com/board');
     this.player0Ref = new Firebase('https://games-by-greg.firebaseIO.com/players/player0');
     this.player1Ref = new Firebase('https://games-by-greg.firebaseIO.com/players/player1');
-    // board is set properly here
+    this.playersRef = new Firebase('https://games-by-greg.firebaseIO.com/players');
+  },
+
+  watchFirebaseData: function() {
+    var that = this;
+    this.currentPlayerRef.on('value', function(snapshot) {
+      that.currentPlayer = snapshot.val();
+    });
     this.boardRef.on('value', function(snapshot) {
       if (that.model) {
         that.displayPieces(that.model.board);
         that.checkWin(that.currentPlayer);
       }
     });
-
     this.player0Ref.on('value', function(snapshot) {
       that.name0 = snapshot.val().name;
+      if (that.name0 === '') {
+        that.showWaitingMessage();
+        that.undelegateEvents();
+        that.model.resetVars();
+      } else {
+        that.hideWaitingMessage();
+        that.delegateEvents();
+      }
     });
     this.player1Ref.on('value', function(snapshot) {
       that.name1 = snapshot.val().name;
+      if (that.name1 === '') {
+        that.showWaitingMessage();
+        that.undelegateEvents();
+        that.model.resetVars();
+      } else {
+        that.hideWaitingMessage();
+        that.delegateEvents();
+      }
     });
+  },
+
+  showWaitingMessage: function() {
+    $('#waiting-for-opponent').show();
+  },
+
+  hideWaitingMessage: function() {
+    $('#waiting-for-opponent').hide();
   },
 
   // setGregbot: function(val) {
@@ -58,7 +89,6 @@ Games.Views.TictactoeGame = Backbone.View.extend({
   },
 
   handleClick: function(e) {
-    // debugger;
     if (this.currentPlayer === this.options.name) {
       var pieceToAdd = this.model.round * this.model.getMultiplier();
       var index = this.getXYIndex(e);
@@ -144,11 +174,12 @@ Games.Views.TictactoeGame = Backbone.View.extend({
     $('#winner').html(this.winner + ' wins!');
     $('#winner').show();
     this.player0Ref.child('online').remove();
+    this.player0Ref.child('name').set('');
     this.player1Ref.child('online').remove();
+    this.player1Ref.child('name').set('');
     var view = new Games.Views.TictactoeIndex();
     // $('#container').html(view.render().el);
     $('.board').append(view.render().el);
-
   }
 
 });

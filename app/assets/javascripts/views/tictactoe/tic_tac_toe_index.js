@@ -39,7 +39,9 @@ Games.Views.TictactoeIndex = Backbone.View.extend({
     var player0Ref = new Firebase('games-by-greg.firebaseIO.com/players/player0');
     var player1Ref = new Firebase('games-by-greg.firebaseIO.com/players/player1');
     player0Ref.child('online').onDisconnect().remove();
+    player0Ref.child('name').onDisconnect().set('');
     player1Ref.child('online').onDisconnect().remove();
+    player1Ref.child('name').onDisconnect().set('');
 
     var boardRef = new Firebase('https://games-by-greg.firebaseIO.com/board');
     boardRef.set( [ [], [], [] ] );
@@ -85,6 +87,9 @@ Games.Views.TictactoeIndex = Backbone.View.extend({
 
   tryToJoin: function(playerNum) {
     var name = prompt('Enter name');
+    while (name === '') {
+      name = prompt('Cannot be blank');
+    }
     var that = this;
     this.currentState = this.playingStates.joining;
     this.gameRef.child('players/player' + playerNum + '/online').transaction( function(onlineVal) {
