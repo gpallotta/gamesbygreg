@@ -10,12 +10,9 @@ Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
     var index = this.getXYIndex(e);
     var existingPiece = this.model.board[ index[0] ][ index[1] ];
     if (existingPiece === undefined || existingPiece === '' || existingPiece === 0) {
-      this.model.setPiece(pieceToAdd, index);
-      this.model.removeOldPieces(this.round);
-      this.round += 1;
-      this.displayPieces();
-      this.checkWin('Human');
+      this.placeHumanPiece(pieceToAdd, index);
       if (!this.winner) {
+        this.hideYourTurnMessage();
         this.displayGregbotThinking();
         var _this = this;
         setTimeout(function() {
@@ -23,6 +20,14 @@ Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
         }, 1000);
       }
     }
+  },
+
+  placeHumanPiece: function(pieceToAdd, index) {
+    this.model.setPiece(pieceToAdd, index);
+    this.model.removeOldPieces(this.round);
+    this.round += 1;
+    this.displayPieces();
+    this.checkWin('Human');
   },
 
   displayPieces: function() {
@@ -50,6 +55,14 @@ Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
     $('#gregbot-thinking').hide();
   },
 
+  showYourTurnMessage: function() {
+    $('#your-turn').fadeIn();
+  },
+
+  hideYourTurnMessage: function() {
+    $('#your-turn').hide();
+  },
+
   gregbotMove: function() {
     var index = Gregbot.move(this.model.board, this.round);
     var piece = this.round * -1;
@@ -58,15 +71,18 @@ Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
     this.model.removeOldPieces(this.round);
     this.round += 1;
     this.displayPieces();
+    this.showYourTurnMessage();
     this.checkWin('Gregbot');
   },
 
   displayWin: function() {
+    this.undelegateEvents();
     this.model.resetVars();
     $('#winner').html(this.winner + ' wins!');
     $('#winner').show();
     var view = new Games.Views.TictactoeDispatcher();
     $('#buttons-after-win').html(view.render().el);
+    this.hideYourTurnMessage();
   }
 
 });
