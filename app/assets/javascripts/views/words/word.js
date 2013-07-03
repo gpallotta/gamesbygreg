@@ -2,9 +2,6 @@ Games.Views.Word = Backbone.View.extend({
 
   template: HandlebarsTemplates['words/word'],
 
-
-  endMessage: '',
-
   events: {
     'submit #guess-form': 'checkGuess',
     'keyup #new_letter_guess': 'replaceInput'
@@ -12,17 +9,10 @@ Games.Views.Word = Backbone.View.extend({
 
   initialize: function() {
     this.canvas = new Games.Views.Canvas();
-    this.drawFunctions = [
-      function() {},
-      this.canvas.noose,
-      this.canvas.head,
-      this.canvas.body,
-      this.canvas.leftLeg,
-      this.canvas.rightLeg,
-      this.canvas.leftArm,
-      this.canvas.rightArm,
-      this.canvas.sadFace
-    ];
+    this.watchTriggers();
+  },
+
+  watchTriggers: function() {
     this.model.on('change', this.render, this);
     this.model.on('guess', this.render, this);
     this.model.on('win', function() {
@@ -46,23 +36,13 @@ Games.Views.Word = Backbone.View.extend({
   checkGuess: function(e) {
     e.preventDefault();
     var letter = $('#new_letter_guess').val().toLowerCase();
-
-    var alreadyGuessed = this.alreadyGuessed(letter);
+    var alreadyGuessed = this.model.guessedLetters.indexOf(letter) > -1;
     this.model.checkLetter(letter);
     this.model.trigger('guess');
-    this.drawFunctions[this.model.wrongGuessedLetters.length]();
+    this.canvas.callDrawFunctions([this.model.wrongGuessedLetters.length]);
     this.showAlreadyGuessed(alreadyGuessed);
-
     this.resetForm();
     this.checkEndGame();
-  },
-
-  alreadyGuessed: function(letter) {
-    if (this.model.guessedLetters.indexOf(letter) > -1) {
-      return true;
-    } else {
-      return false;
-    }
   },
 
   showAlreadyGuessed: function(display) {

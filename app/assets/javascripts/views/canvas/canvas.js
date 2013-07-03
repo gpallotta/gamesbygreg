@@ -13,6 +13,24 @@ Games.Views.Canvas = Backbone.View.extend({
     return this;
   },
 
+  callDrawFunctions: function(index) {
+    this.drawFunctions()[index](); // get function at index, call it
+  },
+
+  drawFunctions: function() {
+   return [
+      function() {},
+      this.noose,
+      this.head,
+      this.body,
+      this.leftLeg,
+      this.rightLeg,
+      this.leftArm,
+      this.rightArm,
+      this.sadFace
+    ];
+  },
+
   gallows: function() {
     var ctx = canvas.getContext('2d');
     ctx.beginPath();

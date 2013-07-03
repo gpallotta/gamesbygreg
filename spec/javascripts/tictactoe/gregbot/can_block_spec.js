@@ -13,7 +13,7 @@ describe("gregbot blocking opponent's winning move", function() {
     var round = 8;
     var board = [ [3, 7, ''], ['', '', ''], ['', '', ''] ];
     var index = Gregbot.move(board, round);
-    expect(index).to.not.eql([0,2]);
+    expect(index).to.not.eql([0,2]); // will fail intermittenly
   });
 
 });
