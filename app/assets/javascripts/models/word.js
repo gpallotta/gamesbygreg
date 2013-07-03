@@ -55,6 +55,5 @@ Games.Models.Word = Backbone.Model.extend({
   resetStats: function() {
     this.guessedLetters.length = 0;
     this.wrongGuessedLetters.length = 0;
-    this.wrongGuessCount = 0;
   }
 });

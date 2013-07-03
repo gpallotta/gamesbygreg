@@ -1,4 +1,4 @@
-//= require gregbot
+//= require spec_helper
 
 describe("gregbot blocking opponent's winning move", function() {
 

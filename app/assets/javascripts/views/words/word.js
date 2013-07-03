@@ -37,10 +37,10 @@ Games.Views.Word = Backbone.View.extend({
     e.preventDefault();
     var letter = $('#new_letter_guess').val().toLowerCase();
     var alreadyGuessed = this.model.guessedLetters.indexOf(letter) > -1;
+    this.showAlreadyGuessed(alreadyGuessed);
     this.model.checkLetter(letter);
     this.model.trigger('guess');
     this.canvas.callDrawFunctions([this.model.wrongGuessedLetters.length]);
-    this.showAlreadyGuessed(alreadyGuessed);
     this.resetForm();
     this.checkEndGame();
   },
