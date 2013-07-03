@@ -45,6 +45,14 @@ Games.Views.Tictactoe = Backbone.View.extend({
         return key;
       }
     }
+  },
+
+  showYourTurnMessage: function() {
+    $('#your-turn').fadeIn();
+  },
+
+  hideYourTurnMessage: function() {
+    $('#your-turn').hide();
   }
 
 });

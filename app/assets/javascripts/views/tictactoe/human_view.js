@@ -26,6 +26,7 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
       var index = this.getXYIndex(e);
       var existingPiece = this.model.board[ index[0] ][ index[1] ];
       if (existingPiece === undefined || existingPiece === '' || existingPiece === 0) {
+        this.hideYourTurnMessage();
         this.model.setPiece(pieceToAdd, index);
         this.model.removeOldPieces(this.round);
         this.boardRef.set(this.model.board);
@@ -37,8 +38,8 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
   },
 
   setCurrentPlayer: function() {
-    var num = this.currentPlayer + 1;
-    this.gameRef.child('currentPlayer').set(num % 2);
+    var num = (this.currentPlayer + 1)%2;
+    this.gameRef.child('currentPlayer').set(num);
   },
 
   displayPieces: function(board) {
@@ -69,9 +70,18 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
 
   startGame: function() {
     this.model.resetVars();
+    this.roundRef.set(1);
     this.currentState = this.playingStates.playing;
     this.gameRef.child('currentPlayer').set(0);
     this.delegateEvents();
+  },
+
+  showOpponentTurnMessage: function() {
+    $('#opponent-turn').fadeIn();
+  },
+
+  hideOpponentTurnMessage: function() {
+    $('#opponent-turn').hide();
   },
 
   setFirebaseRefs: function() {

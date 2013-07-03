@@ -55,14 +55,6 @@ Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
     $('#gregbot-thinking').hide();
   },
 
-  showYourTurnMessage: function() {
-    $('#your-turn').fadeIn();
-  },
-
-  hideYourTurnMessage: function() {
-    $('#your-turn').hide();
-  },
-
   gregbotMove: function() {
     var index = Gregbot.move(this.model.board, this.round);
     var piece = this.round * -1;
