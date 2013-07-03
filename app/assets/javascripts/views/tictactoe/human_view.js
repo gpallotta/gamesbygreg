@@ -1,28 +1,6 @@
-Games.Views.TictactoeHuman = Backbone.View.extend({
-
-  template: HandlebarsTemplates['tictactoe/game'],
+Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
 
   playingStates: { watching: 0, joining: 1, waiting: 2, playing: 3 },
-
-  winner: false,
-
-  round: 1,
-
-  translate: {
-    'top-left': [0,0],
-    'top-middle': [0,1],
-    'top-right': [0,2],
-    'middle-left': [1,0],
-    'middle-middle': [1,1],
-    'middle-right': [1,2],
-    'bottom-left': [2,0],
-    'bottom-middle': [2,1],
-    'bottom-right': [2,2]
-  },
-
-  events: {
-    'click .square': 'handleClick'
-  },
 
   initialize: function() {
     this.model = new Games.Models.TictactoeHuman();
@@ -34,18 +12,12 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
     this.watchFirebaseData();
   },
 
-
   showWaitingMessage: function() {
     $('#waiting-for-opponent').show();
   },
 
   hideWaitingMessage: function() {
     $('#waiting-for-opponent').hide();
-  },
-
-  render: function() {
-    $(this.el).html(this.template());
-    return this;
   },
 
   handleClick: function(e) {
@@ -69,18 +41,6 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
     this.gameRef.child('currentPlayer').set(num % 2);
   },
 
-  getXYIndex: function(e) {
-    var squareId = e.currentTarget.id;
-    return this.translate[squareId];
-  },
-
-  checkWin: function(playerName) {
-    if (this.model.checkWin()) {
-      this.winner = playerName;
-      this.model.trigger('win');
-    }
-  },
-
   displayPieces: function(board) {
     var piece, key;
     for (var i = 0; i < 3; i++) {
@@ -94,14 +54,6 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
         } else {
           $('#' + key).css('background-color', 'white');
         }
-      }
-    }
-  },
-
-  getKeyByValue: function(value) {
-    for (var key in this.translate) {
-      if ( this.translate[key].toString() == value.toString() ) {
-        return key;
       }
     }
   },
@@ -143,7 +95,7 @@ Games.Views.TictactoeHuman = Backbone.View.extend({
       if (online0 === undefined || online1 === undefined) {
         that.undelegateEvents(); // undelegate events initially - will delegate once game starts
         if (!that.winner) {
-          $('#waiting-for-opponent').show();
+          $('#waiting-for-opponent').show(); // waiting for other player
         }
       } else {
         $('#waiting-for-opponent').hide();

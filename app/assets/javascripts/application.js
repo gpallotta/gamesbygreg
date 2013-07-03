@@ -18,6 +18,7 @@
 //= require games
 //= require_tree ../templates
 //= require ./models/tic_tac_toe_board
+//= require ./views/tictactoe/tic_tac_toe_view
 //= require_tree ./models
 //= require_tree ./collections
 //= require_tree ./views

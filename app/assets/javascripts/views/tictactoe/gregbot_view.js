@@ -1,35 +1,8 @@
-Games.Views.TictactoeGregbot = Backbone.View.extend({
-
-  template: HandlebarsTemplates['tictactoe/game'],
-
-  winner: false,
-
-  round: 1,
-
-  translate: {
-    'top-left': [0,0],
-    'top-middle': [0,1],
-    'top-right': [0,2],
-    'middle-left': [1,0],
-    'middle-middle': [1,1],
-    'middle-right': [1,2],
-    'bottom-left': [2,0],
-    'bottom-middle': [2,1],
-    'bottom-right': [2,2]
-  },
-
-  events: {
-    'click .square': 'handleClick'
-  },
+Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
 
   initialize: function() {
     this.model = new Games.Models.TictactoeGregbot();
     this.model.on('win', this.displayWin, this);
-  },
-
-  render: function() {
-    $(this.el).html(this.template());
-    return this;
   },
 
   handleClick: function(e) {
@@ -69,25 +42,12 @@ Games.Views.TictactoeGregbot = Backbone.View.extend({
     }
   },
 
-  getXYIndex: function(e) {
-    var squareId = e.currentTarget.id;
-    return this.translate[squareId];
-  },
-
   displayGregbotThinking: function() {
     $('#gregbot-thinking').fadeIn();
   },
 
   hideGregbotThinking: function() {
     $('#gregbot-thinking').hide();
-  },
-
-  getKeyByValue: function(value) {
-    for (var key in this.translate) {
-      if ( this.translate[key].toString() == value.toString() ) {
-        return key;
-      }
-    }
   },
 
   gregbotMove: function() {
@@ -101,13 +61,6 @@ Games.Views.TictactoeGregbot = Backbone.View.extend({
     this.checkWin('Gregbot');
   },
 
-  checkWin: function(name) {
-    if (this.model.checkWin(name)) {
-      this.winner = name;
-      this.model.trigger('win');
-    }
-  },
-
   displayWin: function() {
     this.model.resetVars();
     $('#winner').html(this.winner + ' wins!');
@@ -115,6 +68,5 @@ Games.Views.TictactoeGregbot = Backbone.View.extend({
     var view = new Games.Views.TictactoeDispatcher();
     $('#buttons-after-win').html(view.render().el);
   }
-
 
 });
