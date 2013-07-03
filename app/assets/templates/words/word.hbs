@@ -1,23 +1,29 @@
-<div class="pure-u-1-1">
-  <div id="display">
-    <p>{{display}}</p>
-    <p>{{underscores}}</p>
+<div class="row">
+  <div class="span8 offset2">
+    <div class="display">
+      <p>{{display}}</p>
+      <p>{{underscores}}</p>
+    </div>
   </div>
+</div>
 
-  <div>
-    <span id="already-guessed-error">Already guessed</span>
-    <form id="guess-form" class="pure-form">
-        <input type="text" name="guess" id="new_letter_guess">
-        <input type="submit" value="Guess"class="pure-button" id="letter-submit">
-    </form>
-  </div>
+<div class="row guess-form-wrapper">
+  <span id="already-guessed-error">Already guessed</span>
+  <form id="guess-form" class="pure-form">
+      <input type="text" name="guess" id="new_letter_guess">
+      <input type="submit" value="Guess" class="btn" id="letter-submit">
+  </form>
+</div>
 
+<div class="row">
   <ul id="guessed-letters">
   {{#each wrongLetters}}
     <li>{{this}}</li>
   {{/each}}
   </ul>
+</div>
 
+<div class="row">
   <p id="result-message"></p>
   <p id="word-was"></p>
 </div>

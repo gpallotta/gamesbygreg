@@ -6,10 +6,11 @@ Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
   },
 
   handleClick: function(e) {
-    var pieceToAdd = this.round * this.model.getMultiplier();
     var index = this.getXYIndex(e);
     var existingPiece = this.model.board[ index[0] ][ index[1] ];
-    if (existingPiece === undefined || existingPiece === '' || existingPiece === 0) {
+    if (existingPiece === '') {
+      this.undelegateEvents();
+      var pieceToAdd = this.round * this.model.getMultiplier();
       this.placeHumanPiece(pieceToAdd, index);
       if (!this.winner) {
         this.hideYourTurnMessage();
@@ -17,6 +18,7 @@ Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
         var _this = this;
         setTimeout(function() {
           _this.gregbotMove();
+          _this.delegateEvents();
         }, 1000);
       }
     }
@@ -73,7 +75,7 @@ Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
     $('#winner').html(this.winner + ' wins!');
     $('#winner').show();
     var view = new Games.Views.TictactoeDispatcher();
-    $('#buttons-after-win').html(view.render().el);
+    $('#main-container').append(view.render().el);
     this.hideYourTurnMessage();
   }
 

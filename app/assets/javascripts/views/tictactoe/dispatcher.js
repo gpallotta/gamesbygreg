@@ -23,12 +23,12 @@ Games.Views.TictactoeDispatcher = Backbone.View.extend({
 
   humanGame: function() {
     var view = new Games.Views.TictactoeHuman();
-    $('#container').html(view.render().el);
+    $('#main-container').html(view.render().el);
   },
 
   gregbotGame: function() {
     var view = new Games.Views.TictactoeGregbot();
-    $('#container').html(view.render().el);
+    $('#main-container').html(view.render().el);
     $('#your-turn').fadeIn();
   },
 

@@ -74,7 +74,7 @@ Games.Views.Word = Backbone.View.extend({
     if (this.endMessage === 'You lose') {
       $('#word-was').html('The word was ' + this.model.word());
     }
-    $('#container').append(index.render().el);
+    $('#main-container').append(index.render().el);
   },
 
   replaceInput: function(e) {

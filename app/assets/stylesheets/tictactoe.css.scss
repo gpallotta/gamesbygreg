@@ -2,44 +2,40 @@
   margin-top: 15px;
 }
 
-#ttt-human {
+.ttt-start-button {
   font-size: 35px;
   color: white;
   padding: 20px;
   border: 0;
 }
 
-#ttt-gregbot {
-  font-size: 35px;
-  color: white;
-}
-
 #winner {
   font-size: 30px;
-  display: none;
-  letter-spacing: 0;
   margin: 20px;
-}
-
-.board {
-  height: 350px;
 }
 
 .message {
   display: none;
-  letter-spacing: 0;
+  text-align: center;
+  margin-right: 25px;
   margin-top: 10px;
-  margin-left: 40px;
   font-size: 25px;
 }
 
-.row {
-  margin: 0 auto;
+.board-row {
   margin-bottom: -5px;
+  .inner-row {
+    margin: 0 -15px;
+  }
   .square {
     height: 125px;
     width: 125px;
     display: inline-block;
     border: 1px solid black;
   }
+}
+
+#buttons-after-win {
+  height: 300px;
+  width: 300px;
 }
