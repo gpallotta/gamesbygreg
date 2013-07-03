@@ -75,7 +75,7 @@ Games.Views.TictactoeGregbot = Games.Views.Tictactoe.extend({
     $('#winner').html(this.winner + ' wins!');
     $('#winner').show();
     var view = new Games.Views.TictactoeDispatcher();
-    $('#main-container').append(view.render().el);
+    $('#buttons-after-win').html(view.render().el);
     this.hideYourTurnMessage();
   }
 
