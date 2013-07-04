@@ -63,17 +63,21 @@ li {
   color: #C0392B;
 }
 
-#result-message {
-  font-size: 30px;
-  color: #7F8C8D;
-  margin-bottom: 15px;
+.hangman-result {
+  text-align: center;
+  #result-message {
+    font-size: 30px;
+    color: #7F8C8D;
+    margin-bottom: 15px;
+  }
+
+  #word-was {
+    font-size: 30px;
+    color: #7F8C8D;
+    margin-top: 0px;
+  }
 }
 
-#word-was {
-  font-size: 30px;
-  color: #7F8C8D;
-  margin-top: 0px;
-}
 
 #canvas {
   margin-top: 20px;

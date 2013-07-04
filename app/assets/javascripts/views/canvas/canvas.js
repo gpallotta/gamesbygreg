@@ -112,7 +112,8 @@ Games.Views.Canvas = Backbone.View.extend({
   },
 
   sadFace: function() {
-    var ctx = this.canvas.getContext('2d');
+    canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.moveTo(155,80);
     ctx.arc(150,80,5,0,Math.PI,true);
