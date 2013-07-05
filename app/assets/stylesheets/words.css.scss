@@ -25,6 +25,7 @@ li {
   text-align: center;
   #guess-form {
     input[type=text] {
+      text-align: center;
       padding: 10px;
       font-size: 30px;
       color: #BDC3C7;
@@ -46,10 +47,14 @@ li {
 .display {
   text-align: center;
   margin-bottom: 30px;
+  // margin-left: 10px;
   color: #BDC3C7;
   text-transform: uppercase;
   font-size: 40px;
   letter-spacing: 1em;
+  p {
+    margin-left: 35px;
+  }
 }
 
 #guessed-letters {
@@ -68,7 +73,7 @@ li {
   #result-message {
     font-size: 30px;
     color: #7F8C8D;
-    margin-bottom: 15px;
+    margin: 30px auto;
   }
 
   #word-was {
@@ -80,6 +85,7 @@ li {
 
 
 #canvas {
+  margin-left: 20px;
   margin-top: 20px;
   background-color: #E6E6E6;
 }
