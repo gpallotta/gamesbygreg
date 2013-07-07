@@ -12,26 +12,16 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
     this.watchFirebaseData();
   },
 
-  showWaitingMessage: function() {
-    $('#waiting-for-opponent').show();
-  },
-
-  hideWaitingMessage: function() {
-    $('#waiting-for-opponent').hide();
-  },
-
   handleClick: function(e) {
     if (this.currentPlayer === this.playerNum) {
       var pieceToAdd = this.round * this.model.getMultiplier(this.round);
       var index = this.getXYIndex(e);
       var existingPiece = this.model.board[ index[0] ][ index[1] ];
       if (existingPiece === undefined || existingPiece === '' || existingPiece === 0) {
-        this.hideYourTurnMessage();
         this.model.setPiece(pieceToAdd, index);
         this.model.removeOldPieces(this.round);
         this.boardRef.set(this.model.board);
         this.roundRef.set(this.round+1);
-        this.checkWin(this.name);
         this.setCurrentPlayer();
       }
     }
@@ -60,12 +50,41 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
   },
 
   displayWin: function() {
-    $('#winner').html(this.winner + ' wins!');
+    this.resetFirebase();
+    $('#winner').html('Player ' + this.winner + ' wins!');
     $('#winner').show();
     var view = new Games.Views.TictactoeDispatcher();
     $('#buttons-after-win').html(view.render().el);
+    this.hideMessages();
+    $('#your-turn').hide();
+  },
+
+  hideMessages: function() {
+    $('#opponent-turn').html('');
+    $('#your-turn').html('');
+    $('#waiting-for-opponent').hide();
+  },
+
+  resetFirebase: function() {
+    this.gameRef.off();
+    this.playersRef.off();
+    this.roundRef.off();
+    this.boardRef.off();
     this.myPlayerRef.child('online').remove();
-    this.myPlayerRef.child('name').set('');
+    this.gameRef.child('currentPlayer').set(0);
+    this.gameRef.child('round').set(1);
+  },
+
+  displayTurn: function() {
+    if (this.playerNum !== undefined) {
+      if (this.playerNum === this.currentPlayer) {
+        $('#opponent-turn').hide();
+        $('#your-turn').fadeIn();
+      } else {
+        $('#your-turn').hide();
+        $('#opponent-turn').fadeIn();
+      }
+    }
   },
 
   startGame: function() {
@@ -74,14 +93,7 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
     this.currentState = this.playingStates.playing;
     this.gameRef.child('currentPlayer').set(0);
     this.delegateEvents();
-  },
-
-  showOpponentTurnMessage: function() {
-    $('#opponent-turn').fadeIn();
-  },
-
-  hideOpponentTurnMessage: function() {
-    $('#opponent-turn').hide();
+    this.displayTurn();
   },
 
   setFirebaseRefs: function() {
@@ -106,6 +118,8 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
         that.undelegateEvents(); // undelegate events initially - will delegate once game starts
         if (!that.winner) {
           $('#waiting-for-opponent').show(); // waiting for other player
+          $('#opponent-turn').hide();
+          $('#your-turn').hide();
         }
       } else {
         $('#waiting-for-opponent').hide();
@@ -114,6 +128,7 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
     });
     this.gameRef.child('currentPlayer').on('value', function(snapshot) { // update current player
       that.currentPlayer = snapshot.val();
+      that.displayTurn();
     });
     this.roundRef.on('value', function(snapshot) {
       that.round = snapshot.val();
@@ -135,12 +150,17 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
     });
   },
 
+  checkWin: function(playerNum) {
+    if (this.model.checkWin()) {
+      this.winner = playerNum;
+      this.model.trigger('win');
+    } else {
+      this.displayTurn();
+    }
+  },
+
   tryToJoin: function(playerNum) {
     var that = this;
-    var name = prompt('Enter name');
-    while (name === '' || name === undefined) {
-      name = prompt('Cannot be blank');
-    }
     this.currentState = this.playingStates.joining;
     this.playersRef.child('player' + playerNum + '/online').transaction( function(onlineVal) {
       return (onlineVal === null);
@@ -148,19 +168,18 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
       if (committed) { // we got in
         that.myPlayerRef = that.playersRef.child('player' + playerNum);
         that.playerNum = playerNum; // set playerNum - used to compare against currentPlayer
+        $('#playernum').text("You are player " + playerNum);
+        if (playerNum === 1) {
+          $('#opponent-turn').fadeIn(); // hacky
+        }
         that.setOnDisconnect(); // set disconenct behavior to clear online status
-        that.setCurrentPlayer(playerNum);
-        that.playersRef.child('player' + playerNum + '/name').set(name); // set player name
-        that.name = name; // set name on view
         that.currentState = that.playingStates.waiting; // set playing state
-        that.opponentRef = that.playersRef.child('player' + (1 - playerNum));
       }
     });
   },
 
   setOnDisconnect: function() {
     this.myPlayerRef.child('online').onDisconnect().remove();
-    this.myPlayerRef.child('name').onDisconnect().set('');
   }
 
 });

@@ -32,9 +32,9 @@ Games.Views.Tictactoe = Backbone.View.extend({
     return this.translate[squareId];
   },
 
-  checkWin: function(playerName) {
+  checkWin: function(playerNum) {
     if (this.model.checkWin()) {
-      this.winner = playerName;
+      this.winner = playerNum;
       this.model.trigger('win');
     }
   },
