@@ -4,6 +4,7 @@ gem 'rails', '3.2.13'
 
 gem 'pg'
 gem 'backbone-on-rails'
+gem 'newrelic_rpm'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
