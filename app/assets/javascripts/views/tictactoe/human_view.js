@@ -13,6 +13,7 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
   },
 
   handleClick: function(e) {
+    this.undelegateEvents();
     if (this.currentPlayer === this.playerNum) {
       var pieceToAdd = this.round * this.model.getMultiplier(this.round);
       var index = this.getXYIndex(e);
@@ -25,6 +26,7 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
         this.setCurrentPlayer();
       }
     }
+    this.delegateEvents();
   },
 
   setCurrentPlayer: function() {
