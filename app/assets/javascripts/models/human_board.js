@@ -12,7 +12,6 @@ Games.Models.TictactoeHuman = Games.Models.TictactoeBoard.extend({
 
   setPiece: function(piece, index) {
     this.board[ index[0] ][ index[1] ] = piece;
-    this.boardRef.set(this.board);
   },
 
   resetVars: function() {
