@@ -5,11 +5,11 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
   initialize: function() {
     this.model = new Games.Models.TictactoeHuman();
     this.model.on('win', this.displayWin, this);
-    this.model.resetVars();
-    this.currentState = this.playingStates.watching;
+    // this.model.resetVars();
     this.setFirebaseRefs();
-    this.waitToJoin();
     this.watchFirebaseData();
+    this.currentState = this.playingStates.watching;
+    this.waitToJoin();
   },
 
   handleClick: function(e) {
@@ -53,12 +53,14 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
 
   displayWin: function() {
     this.resetFirebase();
+    this.model.resetVars();
     $('#winner').html('Player ' + this.winner + ' wins!');
     $('#winner').show();
     var view = new Games.Views.TictactoeDispatcher();
     $('#buttons-after-win').html(view.render().el);
     this.hideMessages();
     $('#your-turn').hide();
+    $('#game-full').hide();
   },
 
   hideMessages: function() {
@@ -72,7 +74,9 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
     this.playersRef.off();
     this.roundRef.off();
     this.boardRef.off();
-    this.myPlayerRef.child('online').remove();
+    if (this.myPlayerRef) {
+      this.myPlayerRef.child('online').remove();
+    }
     this.gameRef.child('currentPlayer').set(0);
     this.gameRef.child('round').set(1);
   },
@@ -116,17 +120,21 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
     this.playersRef.on('value', function(snapshot) {
       var online0 = snapshot.val().player0.online;
       var online1 = snapshot.val().player1.online;
-      if (online0 === undefined || online1 === undefined) {
-        that.undelegateEvents(); // undelegate events initially - will delegate once game starts
-        if (!that.winner) {
-          $('#waiting-for-opponent').show(); // waiting for other player
-          $('#opponent-turn').hide();
-          $('#your-turn').hide();
+      setTimeout(function() {
+        if (online0 === undefined || online1 === undefined ) {
+          that.undelegateEvents(); // undelegate events initially - will delegate once game starts
+          if (!that.winner) {
+            $('#waiting-for-opponent').show(); // waiting for other player
+            $('#opponent-turn').hide();
+            $('#your-turn').hide();
+          }
+        } else if (that.playerNum !== undefined) {
+          $('#waiting-for-opponent').hide();
+          that.startGame(); // start game - both players are here
+        } else if (that.playerNum === undefined) {
+          $('#game-full').fadeIn();
         }
-      } else {
-        $('#waiting-for-opponent').hide();
-        that.startGame(); // start game - both players are here
-      }
+      }, 1000);
     });
     this.gameRef.child('currentPlayer').on('value', function(snapshot) { // update current player
       that.currentPlayer = snapshot.val();
@@ -139,13 +147,13 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
 
   waitToJoin: function() {
     var that = this;
-    this.gameRef.child('/players/player0/online').on('value', function(snapshot) {
+    this.gameRef.child('/players/player0/online').once('value', function(snapshot) {
       if (snapshot.val() === null && that.currentState === 0) {
         that.tryToJoin(0);
       }
     });
 
-    this.gameRef.child('/players/player1/online').on('value', function(snapshot) {
+    this.gameRef.child('/players/player1/online').once('value', function(snapshot) {
       if (snapshot.val() === null && that.currentState === 0) {
         that.tryToJoin(1);
       }
@@ -168,12 +176,13 @@ Games.Views.TictactoeHuman = Games.Views.Tictactoe.extend({
       return (onlineVal === null);
     }, function(error, committed) {
       if (committed) { // we got in
-        that.myPlayerRef = that.playersRef.child('player' + playerNum);
+        that.model.resetVars();
         that.playerNum = playerNum; // set playerNum - used to compare against currentPlayer
+        that.myPlayerRef = that.playersRef.child('player' + playerNum);
         $('#playernum').text("You are player " + playerNum);
-        if (playerNum === 1) {
-          $('#opponent-turn').fadeIn(); // hacky
-        }
+        // if (playerNum === 1) {
+          // $('#opponent-turn').fadeIn(); // hacky
+        // }
         that.setOnDisconnect(); // set disconenct behavior to clear online status
         that.currentState = that.playingStates.waiting; // set playing state
       }
