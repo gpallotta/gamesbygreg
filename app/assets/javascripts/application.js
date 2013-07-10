@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.ui.effect-highlight
 //= require bootstrap
 //= require handlebars.runtime
 //= require underscore

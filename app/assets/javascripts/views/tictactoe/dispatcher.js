@@ -45,6 +45,7 @@ Games.Views.TictactoeDispatcher = Backbone.View.extend({
       var message = snapshot.val();
       var html = '<div><strong>' + message.name + '</strong>: ' + message.message + '</div>';
       $('#chatbox').prepend(html);
+      $('#chatbox div:first').effect('highlight', {}, 1500);
     });
     $('#messageInput').keyup(function (e) {
       if (e.keyCode == 13) {
