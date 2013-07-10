@@ -35,3 +35,26 @@
     border: 1px solid black;
   }
 }
+
+#playernum {
+  font-size: 25px;
+  margin-top: 20px;
+}
+
+#chat {
+  height: 200px;
+  overflow-y: scroll;
+  border: 1px solid black;
+  padding: 15px;
+  #inputs {
+    position: relative;
+    bottom: 0;
+    margin-top: 5px;
+    #nameInput {
+      width: 75px;
+    }
+    #messageInput {
+      width: 160px;
+    }
+  }
+}
