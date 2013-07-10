@@ -31,6 +31,7 @@ Games.Views.TictactoeDispatcher = Backbone.View.extend({
     var view = new Games.Views.TictactoeGregbot();
     $('#main-container').html(view.render().el);
     $('#your-turn').fadeIn();
+    this.setUpMessages();
   },
 
   hideButtons: function() {
